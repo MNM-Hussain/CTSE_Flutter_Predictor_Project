@@ -2,6 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:predictor_app/Database/problems_SetDB.dart';
+import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
 import 'package:predictor_app/Screens/Problems_Set/viewProblem_Set.dart';
 import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
 import 'package:page_transition/page_transition.dart';
@@ -53,7 +54,7 @@ class SplashScreen extends StatelessWidget {
         )
       ]),
       backgroundColor: const Color.fromARGB(255, 36, 35, 35),
-      nextScreen: const MyHomePage(title: 'Predictor'),
+      nextScreen: const LoginScreen(),
       splashIconSize: 250,
       duration: 5000,
       splashTransition: SplashTransition.fadeTransition,
