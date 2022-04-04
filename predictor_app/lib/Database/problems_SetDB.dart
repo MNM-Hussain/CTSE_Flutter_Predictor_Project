@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Database {
+class DatabaseProblemSet {
   late FirebaseFirestore firestore;
-  initialized() {
+  problemSetIntialized() {
     firestore = FirebaseFirestore.instance;
   }
 
-  Future<void> create(String name, String code) async {
+  Future<void> create(String problems, String age) async {
     try {
-      await firestore.collection("countries").add({
-        'name': name,
-        'code': code,
+      await firestore.collection("ProblemSet").add({
+        'problems': problems,
+        'age': age,
         'timestamp':
             FieldValue.serverTimestamp() //this is to get the server timeStamp
       });
@@ -21,7 +21,7 @@ class Database {
 
   Future<void> delete(String id) async {
     try {
-      await firestore.collection("countries").doc(id).delete();
+      await firestore.collection("ProblemSet").doc(id).delete();
     } catch (e) {
       print(e);
     }
@@ -32,10 +32,14 @@ class Database {
     List docs = [];
     try {
       querySnapshot =
-          await firestore.collection('countries').orderBy('timestamp').get();
+          await firestore.collection('ProblemSet').orderBy('timestamp').get();
       if (querySnapshot.docs.isNotEmpty) {
         for (var doc in querySnapshot.docs.toList()) {
-          Map a = {"id": doc.id, "name": doc['name'], "code": doc["code"]};
+          Map a = {
+            "id": doc.id,
+            "age": doc['age'],
+            "problems": doc['problems']
+          };
           docs.add(a);
         }
         return docs;
@@ -46,12 +50,12 @@ class Database {
     return [];
   }
 
-  Future<void> update(String id, String name, String code) async {
+  Future<void> update(String id, String age, String problems) async {
     try {
       await firestore
-          .collection("countries")
+          .collection("ProblemSet")
           .doc(id)
-          .update({'name': name, 'code': code});
+          .update({'age': age, 'problems': problems});
     } catch (e) {
       print(e);
     }

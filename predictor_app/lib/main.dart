@@ -1,13 +1,18 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import './database.dart';
-import './Screens/add.dart';
-import 'Screens/view.dart';
+import 'package:predictor_app/Database/problems_SetDB.dart';
+import 'package:predictor_app/Screens/Problems_Set/viewProblem_Set.dart';
+import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
+import 'package:page_transition/page_transition.dart';
+import 'Database/regularProblemDB.dart';
+// import 'Screens/RegularProblems/createRegularProblemForm.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
+  // runApp(const ViewRegularProblem());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +26,39 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Predictor'),
+      // home: const MyHomePage(title: 'Predictor'),
+      home: const SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSplashScreen(
+      splash: Column(children: [
+        Image.asset(
+          'assets/logo.png',
+          height: 195.0,
+        ),
+        const Text(
+          'De Predictor',
+          style: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(134, 255, 0, 0),
+              fontFamily: 'Abril Fatface'),
+        )
+      ]),
+      backgroundColor: const Color.fromARGB(255, 36, 35, 35),
+      nextScreen: const MyHomePage(title: 'Predictor'),
+      splashIconSize: 250,
+      duration: 5000,
+      splashTransition: SplashTransition.fadeTransition,
+      pageTransitionType: PageTransitionType.leftToRightWithFade,
+      animationDuration: const Duration(seconds: 7),
     );
   }
 }
@@ -35,68 +72,58 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Database db;
+  late DatabaseRegularProblem dbr;
+  late DatabaseProblemSet dbp;
   List docs = [];
 
-  initialize() {
-    db = Database();
-    db.initialized();
-    db.read().then((value) => {
-          setState(() {
-            docs = value;
-          })
-        });
+  regularProblemInitialize() {
+    dbr = DatabaseRegularProblem();
+    dbr.regularProblemIntialized();
+  }
+
+  problemSetInitialize() {
+    dbp = DatabaseProblemSet();
+    dbp.problemSetIntialized();
   }
 
   @override
   void initState() {
     super.initState();
-    initialize();
+    regularProblemInitialize();
+    problemSetInitialize();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(56, 75, 49, 1.0),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView.builder(
-        itemCount: docs.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            margin: const EdgeInsets.all(10),
-            child: ListTile(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => View(
-                              country: docs[index],
-                              db: db,
-                            ))).then((value) => {
-                      if (value != null) {initialize()}
-                    });
-              },
-              contentPadding: const EdgeInsets.only(right: 30, left: 36),
-              title: Text(docs[index]['name']),
-              trailing: Text(docs[index]['code']),
-            ),
-          );
-        },
-      ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Add(db: db)))
-              .then((value) => {
-                    if (value != null) {initialize()}
-                  });
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton:
+          Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+        FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ViewRegularProblem(dbr: dbr)));
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ),
+        FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ViewProblemSet(dbp: dbp)));
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ),
+      ]), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
