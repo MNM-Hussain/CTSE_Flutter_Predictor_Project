@@ -2,12 +2,14 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:predictor_app/Database/problems_SetDB.dart';
+import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
 import 'package:predictor_app/Screens/Problems_Set/viewProblem_Set.dart';
 import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
 import 'package:page_transition/page_transition.dart';
 import 'Database/regularProblemDB.dart';
-// import 'Screens/RegularProblems/createRegularProblemForm.dart';
+import 'Screens/BottomNavigation/BottomNavigation.dart';
+import 'Screens/Drawer/drawerMenu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       // home: const MyHomePage(title: 'Predictor'),
+      debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );
   }
@@ -54,7 +57,8 @@ class SplashScreen extends StatelessWidget {
         )
       ]),
       backgroundColor: const Color.fromARGB(255, 36, 35, 35),
-      nextScreen: const LoginScreen(),
+      // nextScreen: const LoginScreen(),
+      nextScreen: const MyHomePage(title: "DE Predictor"),
       splashIconSize: 250,
       duration: 5000,
       splashTransition: SplashTransition.fadeTransition,
@@ -97,6 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavBar(),
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: Text(widget.title),
