@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/ImagePages/UploadImage.dart';
 
 class RetreiveImages extends StatefulWidget {
@@ -80,6 +81,7 @@ class _RetreiveImagesState extends State<RetreiveImages> {
     );
 
     return Scaffold(
+      drawer: NavBar(),
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
         title: Text("Motivation"),

@@ -58,7 +58,7 @@ class SplashScreen extends StatelessWidget {
       ]),
       backgroundColor: const Color.fromARGB(255, 36, 35, 35),
       // nextScreen: const LoginScreen(),
-      nextScreen: const MyHomePage(title: "DE Predictor"),
+      nextScreen: const LoginScreen(),
       splashIconSize: 250,
       duration: 5000,
       splashTransition: SplashTransition.fadeTransition,

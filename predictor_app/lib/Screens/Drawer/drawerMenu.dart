@@ -13,8 +13,8 @@ class NavBar extends StatelessWidget {
             accountEmail: const Text('hussain@gmail.com'),
             currentAccountPicture: CircleAvatar(
               child: ClipOval(
-                child: Image.network(
-                  'https://oflutter.com/wp-content/uploads/2021/02/girl-profile.png',
+                child: Image.asset(
+                  'profile.jpg',
                   fit: BoxFit.cover,
                   width: 90,
                   height: 90,
@@ -26,7 +26,7 @@ class NavBar extends StatelessWidget {
               image: DecorationImage(
                   fit: BoxFit.fill,
                   image: NetworkImage(
-                      'https://oflutter.com/wp-content/uploads/2021/02/profile-bg3.jpg')),
+                      'https://images.unsplash.com/photo-1541450805268-4822a3a774ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80.jpg')),
             ),
           ),
           ListTile(
@@ -40,8 +40,8 @@ class NavBar extends StatelessWidget {
             onTap: () => null,
           ),
           ListTile(
-            leading: const Icon(Icons.image_outlined),
-            title: const Text('Quotes'),
+            leading: const Icon(Icons.psychology_outlined),
+            title: const Text('Motivation'),
             onTap: () => null,
           ),
           ListTile(

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
 import 'package:predictor_app/models/UserModel.dart';
 
@@ -103,6 +104,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     return Scaffold(
+      drawer: NavBar(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('profile'),
@@ -137,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               child: CircleAvatar(
                 backgroundColor: Colors.white,
-                backgroundImage: AssetImage('logo1.png'),
+                backgroundImage: AssetImage('profile.jpg'),
                 radius: 60.0,
               ),
             ),

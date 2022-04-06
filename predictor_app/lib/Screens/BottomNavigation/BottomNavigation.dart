@@ -36,22 +36,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
             BottomNavigationBarItem(
               label: 'Prediction',
               icon: Icon(Icons.home),
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.red,
             ),
             BottomNavigationBarItem(
               label: 'Problems',
-              icon: Icon(Icons.report_problem),
-              backgroundColor: Colors.black,
+              icon: Icon(Icons.sync_problem_outlined),
+              backgroundColor: Colors.red,
             ),
             BottomNavigationBarItem(
               label: 'Motivation',
               icon: Icon(Icons.psychology),
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.red,
             ),
             BottomNavigationBarItem(
               label: 'Profile',
               icon: Icon(Icons.assignment_ind),
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.red,
             ),
           ],
         ));
