@@ -1,6 +1,46 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:predictor_app/Screens/ImagePages/RetrieveImages.dart';
+import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
+import 'package:predictor_app/Screens/Profile/Profile.dart';
+import 'package:predictor_app/models/UserModel.dart';
 
-class NavBar extends StatelessWidget {
+class NavBar extends StatefulWidget {
+  const NavBar({Key? key}) : super(key: key);
+
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel? loggedInUser = UserModel();
+  FirebaseFirestore firebaseFirestoreinstance = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Fluttertoast.showToast(
+        msg: "Successfully Logout !", backgroundColor: Colors.redAccent);
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -9,12 +49,14 @@ class NavBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            accountName: const Text('Hussain Nazimudeen'),
-            accountEmail: const Text('hussain@gmail.com'),
+            accountName:
+                Text("${loggedInUser!.firstname} ${loggedInUser!.lastname}"),
+            accountEmail: Text("${loggedInUser!.email}"),
             currentAccountPicture: CircleAvatar(
+              backgroundColor: Colors.transparent,
               child: ClipOval(
                 child: Image.asset(
-                  'profile.jpg',
+                  'logo1.png',
                   fit: BoxFit.cover,
                   width: 90,
                   height: 90,
@@ -42,7 +84,12 @@ class NavBar extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.psychology_outlined),
             title: const Text('Motivation'),
-            onTap: () => null,
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => RetreiveImages(),
+                  fullscreenDialog: true,
+                )),
           ),
           ListTile(
             leading: Icon(Icons.feedback_outlined),
@@ -52,13 +99,18 @@ class NavBar extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.person_outlined),
             title: const Text('Profile'),
-            onTap: () => null,
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => ProfileScreen(),
+                  fullscreenDialog: true,
+                )),
           ),
           const Divider(),
           ListTile(
             leading: const Icon(Icons.logout_outlined),
             title: const Text('Logout'),
-            onTap: () => null,
+            onTap: () => logout(context),
           ),
         ],
       ),

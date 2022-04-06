@@ -2,26 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
 import 'package:predictor_app/models/UserModel.dart';
-import '';
 
-class Registration extends StatefulWidget {
-  const Registration({Key? key}) : super(key: key);
+class EditProfile extends StatefulWidget {
+  EditProfile({Key? key, required this.userDetails}) : super(key: key);
+  UserModel userDetails;
 
   @override
-  State<Registration> createState() => _RegistrationState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
-class _RegistrationState extends State<Registration> {
+class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
 
   final firstNameEditingController = new TextEditingController();
   final lastNameEditingController = new TextEditingController();
   final emailEditingController = new TextEditingController();
-  final passwordEditingController = new TextEditingController();
-  final confirmPasswordEditingController = new TextEditingController();
   final ageEditingController = new TextEditingController();
 
   int jobValue = 0;
@@ -30,47 +27,49 @@ class _RegistrationState extends State<Registration> {
   String civilStatus = "Married";
 
   @override
+  void initState() {
+    super.initState();
+    firstNameEditingController.text = widget.userDetails.firstname!;
+    lastNameEditingController.text = widget.userDetails.lastname!;
+    emailEditingController.text = widget.userDetails.email!;
+    ageEditingController.text = widget.userDetails.age!;
+    if (widget.userDetails.jobStatus! != 'Employed') {
+      jobValue = 1;
+      jobStatus = 'Unemployed';
+    }
+
+    if (widget.userDetails.civilStatus! != 'Married') {
+      civilValue = 1;
+      civilStatus = 'Single';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    void signUp(String email, String password) async {
-      postDetailsToFireStore() async {
-        FirebaseFirestore firebaseFirestoreinstance =
-            FirebaseFirestore.instance;
+    void updateProfile() async {
+      FirebaseFirestore firebaseFirestoreinstance = FirebaseFirestore.instance;
 
-        User? user = _auth.currentUser;
+      User? user = _auth.currentUser;
 
-        UserModel userModel = UserModel();
-
-        userModel.email = user!.email;
-        userModel.uid = user.uid;
-        userModel.firstname = firstNameEditingController.text;
-        userModel.lastname = lastNameEditingController.text;
-        userModel.age = ageEditingController.text;
-        userModel.jobStatus = jobStatus;
-        userModel.civilStatus = civilStatus;
-
+      try {
         await firebaseFirestoreinstance
-            .collection('users')
-            .doc(user.uid)
-            .set(userModel.toMap());
-
-        Fluttertoast.showToast(
-            msg: "Account created Successfully !",
-            backgroundColor: Colors.redAccent);
-
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen()),
-            (route) => false);
-      }
-
-      if (_formKey.currentState!.validate()) {
-        await _auth
-            .createUserWithEmailAndPassword(email: email, password: password)
-            .then((value) => {postDetailsToFireStore()})
-            .catchError((err) {
+            .collection("users")
+            .doc(user!.uid)
+            .update({
+          'firstname': firstNameEditingController.text,
+          'lastname': lastNameEditingController.text,
+          'age': ageEditingController.text,
+          'jobStatus': jobStatus,
+          'civilStatus': civilStatus
+        }).then((value) {
+          Navigator.of(context).pop();
+          setState(() {});
           Fluttertoast.showToast(
-              msg: err.message, backgroundColor: Colors.redAccent);
+              msg: 'Successfuly Updated !', backgroundColor: Colors.redAccent);
         });
+      } catch (e) {
+        Fluttertoast.showToast(
+            msg: e.toString(), backgroundColor: Colors.redAccent);
       }
     }
 
@@ -182,61 +181,8 @@ class _RegistrationState extends State<Registration> {
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
     );
 
-    //password field
-    final passwordField = TextFormField(
-        autofocus: false,
-        controller: passwordEditingController,
-        validator: (value) {
-          RegExp regex = new RegExp(r'^.{6,}$');
-
-          if (value!.isEmpty) {
-            return ("Password is required");
-          }
-
-          if (!regex.hasMatch(value)) {
-            return ("Please Enter valid Password(Min. 6 Characters)");
-          }
-
-          return null;
-        },
-        obscureText: true,
-        onSaved: (value) {
-          passwordEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.vpn_key),
-            contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Password",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
-
-    //confirmPassword field
-    final confirmPasswordField = TextFormField(
-        autofocus: false,
-        controller: confirmPasswordEditingController,
-        validator: (value) {
-          if (confirmPasswordEditingController.text.length < 6 ||
-              passwordEditingController.text != value) {
-            return ("Password doesn't match");
-          }
-
-          return null;
-        },
-        obscureText: true,
-        onSaved: (value) {
-          confirmPasswordEditingController.text = value!;
-        },
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.vpn_key),
-            contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-            hintText: "Confirm Password",
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))));
-
     //sign up button
-    final signUpButton = Material(
+    final UpdateButton = Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(30),
         color: Colors.redAccent,
@@ -244,10 +190,10 @@ class _RegistrationState extends State<Registration> {
           padding: EdgeInsets.fromLTRB(30, 15, 20, 20),
           minWidth: MediaQuery.of(context).size.width,
           onPressed: () {
-            signUp(emailEditingController.text, passwordEditingController.text);
+            updateProfile();
           },
           child: Text(
-            'Sign Up',
+            'Update',
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
@@ -284,7 +230,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(
                             height: 200,
                             child: Image.asset(
-                              "logo1.png",
+                              "question.png",
                               fit: BoxFit.contain,
                             )),
                         firstNameField,
@@ -387,13 +333,7 @@ class _RegistrationState extends State<Registration> {
                           ),
                         ),
                         SizedBox(height: 20),
-                        emaiField,
-                        SizedBox(height: 20),
-                        passwordField,
-                        SizedBox(height: 20),
-                        confirmPasswordField,
-                        SizedBox(height: 20),
-                        signUpButton,
+                        UpdateButton,
                         SizedBox(height: 20)
                       ])),
             ),

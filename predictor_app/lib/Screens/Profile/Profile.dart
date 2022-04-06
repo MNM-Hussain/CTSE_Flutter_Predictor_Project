@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
+import 'package:predictor_app/Screens/Profile/EditProfile.dart';
 import 'package:predictor_app/models/UserModel.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -104,31 +104,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     return Scaffold(
-      drawer: NavBar(),
+      //drawer: NavBar(),
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('profile'),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              print("on tap works");
-            },
-            child: PopupMenuButton(
-              icon: Icon(Icons.more_vert),
-              itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                PopupMenuItem(
-                    onTap: () {
-                      logout(context);
-                    },
-                    child: Text('Logout'))
-              ],
-            ),
-          ),
-        ],
-        centerTitle: true,
-        backgroundColor: Colors.redAccent,
-        elevation: 0.0,
-      ),
+      // appBar: AppBar(
+      //   title: const Text('profile'),
+      //   actions: [
+      //     GestureDetector(
+      //       onTap: () {
+      //         print("on tap works");
+      //       },
+      //       child: PopupMenuButton(
+      //         icon: Icon(Icons.more_vert),
+      //         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+      //           PopupMenuItem(
+      //               onTap: () {
+      //                 logout(context);
+      //               },
+      //               child: Text('Logout'))
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      //   centerTitle: true,
+      //   backgroundColor: Colors.redAccent,
+      //   elevation: 0.0,
+      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 0.0),
@@ -146,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Divider(height: 60.0, color: Colors.grey[600]),
             const Text(
               'NAME',
-              style: TextStyle(color: Colors.grey, letterSpacing: 2.0),
+              style: TextStyle(color: Colors.black, letterSpacing: 2.0),
             ),
             //putting a space between widgets
 
@@ -166,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const Text(
               'AGE',
-              style: TextStyle(color: Colors.grey, letterSpacing: 2.0),
+              style: TextStyle(color: Colors.black, letterSpacing: 2.0),
             ),
             const SizedBox(
               height: 10.0,
@@ -185,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const Text(
               'JOB STATUS',
-              style: TextStyle(color: Colors.grey, letterSpacing: 2.0),
+              style: TextStyle(color: Colors.black, letterSpacing: 2.0),
             ),
             const SizedBox(
               height: 10.0,
@@ -204,7 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             const Text(
               'CIVIL STATUS',
-              style: TextStyle(color: Colors.grey, letterSpacing: 2.0),
+              style: TextStyle(color: Colors.black, letterSpacing: 2.0),
             ),
             const SizedBox(
               height: 10.0,
@@ -223,7 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Row(
               children: [
-                Icon(Icons.email, color: Colors.grey[400]),
+                Icon(Icons.email, color: Colors.black),
                 const SizedBox(width: 10.0),
                 Text("${loggedInUser!.email}",
                     style: TextStyle(
@@ -235,26 +235,67 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(
               height: 20.0,
             ),
-            Material(
-                elevation: 5,
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.redAccent,
-                child: MaterialButton(
-                  padding: EdgeInsets.fromLTRB(30, 15, 20, 20),
-                  minWidth: MediaQuery.of(context).size.width,
-                  onPressed: () {
-                    showDialog<void>(
-                        context: context, builder: (context) => dialog);
-                  },
-                  child: const Text(
-                    'Deactivate Account',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Material(
+                      elevation: 5,
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.redAccent,
+                      child: MaterialButton(
+                        shape: StadiumBorder(
+                          side: BorderSide(color: Colors.black, width: 1),
+                        ),
+                        padding: EdgeInsets.fromLTRB(25, 15, 20, 25),
+                        onPressed: () {
+                          showDialog<void>(
+                              context: context, builder: (context) => dialog);
+                        },
+                        child: const Text(
+                          'Deactivate',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                ),
+                SizedBox(width: 20),
+                Expanded(
+                  flex: 1,
+                  child: Material(
+                      elevation: 5,
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.redAccent,
+                      child: MaterialButton(
+                        shape: StadiumBorder(
+                          side: BorderSide(color: Colors.black, width: 1),
+                        ),
+                        padding: EdgeInsets.fromLTRB(25, 15, 20, 25),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) => EditProfile(
+                                  userDetails: loggedInUser!,
+                                ),
+                                fullscreenDialog: true,
+                              )).then((value) => setState(() {}));
+                        },
+                        child: const Text(
+                          'Edit',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )),
+                )
+              ],
+            ),
             const SizedBox(
               height: 20.0,
             )

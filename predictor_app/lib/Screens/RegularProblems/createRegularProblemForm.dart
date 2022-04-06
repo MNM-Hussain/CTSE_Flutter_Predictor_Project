@@ -1,3 +1,4 @@
+import 'package:predictor_app/Screens/BottomNavigation/BottomNavigation.dart';
 import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
 import '../../Database/regularProblemDB.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +81,7 @@ class _AddState extends State<CreateRegularProblemForm> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ViewRegularProblem(dbr: dbr)));
+                        builder: (context) => BottomNavigation()));
               },
               child: const Text(
                 "Create",

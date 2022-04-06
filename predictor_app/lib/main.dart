@@ -68,68 +68,68 @@ class SplashScreen extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({Key? key, required this.title}) : super(key: key);
+//   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
 
-class _MyHomePageState extends State<MyHomePage> {
-  late DatabaseRegularProblem dbr;
-  late DatabaseProblemSet dbp;
-  List docs = [];
+// class _MyHomePageState extends State<MyHomePage> {
+//   late DatabaseRegularProblem dbr;
+//   late DatabaseProblemSet dbp;
+//   List docs = [];
 
-  regularProblemInitialize() {
-    dbr = DatabaseRegularProblem();
-    dbr.regularProblemIntialized();
-  }
+//   regularProblemInitialize() {
+//     dbr = DatabaseRegularProblem();
+//     dbr.regularProblemIntialized();
+//   }
 
-  problemSetInitialize() {
-    dbp = DatabaseProblemSet();
-    dbp.problemSetIntialized();
-  }
+//   problemSetInitialize() {
+//     dbp = DatabaseProblemSet();
+//     dbp.problemSetIntialized();
+//   }
 
-  @override
-  void initState() {
-    super.initState();
-    regularProblemInitialize();
-    problemSetInitialize();
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//     regularProblemInitialize();
+//     problemSetInitialize();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: NavBar(),
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       drawer: NavBar(),
+//       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+//       appBar: AppBar(
+//         title: Text(widget.title),
+//       ),
 
-      floatingActionButton:
-          Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-        FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ViewRegularProblem(dbr: dbr)));
-          },
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),
-        FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ViewProblemSet(dbp: dbp)));
-          },
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ),
-      ]), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
+//       floatingActionButton:
+//           Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+//         FloatingActionButton(
+//           onPressed: () {
+//             Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                     builder: (context) => ViewRegularProblem(dbr: dbr)));
+//           },
+//           tooltip: 'Increment',
+//           child: const Icon(Icons.add),
+//         ),
+//         FloatingActionButton(
+//           onPressed: () {
+//             Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                     builder: (context) => ViewProblemSet(dbp: dbp)));
+//           },
+//           tooltip: 'Increment',
+//           child: const Icon(Icons.add),
+//         ),
+//       ]), // This trailing comma makes auto-formatting nicer for build methods.
+//     );
+//   }
+// }

@@ -1,3 +1,4 @@
+import 'package:predictor_app/Screens/BottomNavigation/BottomNavigation.dart';
 import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
 import '../../Database/regularProblemDB.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class _AddState extends State<UpdateRegularProblemForm> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
-        // backgroundColor: Color.fromARGB(255, 231, 233, 231),
+        backgroundColor: Colors.redAccent,
         title: const Text("Regular problems"),
         // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.delete))],
       ),
@@ -87,7 +88,7 @@ class _AddState extends State<UpdateRegularProblemForm> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ViewRegularProblem(dbr: dbr)));
+                        builder: (context) => BottomNavigation()));
               },
               child: const Text(
                 "Update",

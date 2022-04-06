@@ -4,8 +4,7 @@ import 'package:predictor_app/Screens/RegularProblems/EditRegularProblem.dart';
 import 'package:predictor_app/Screens/RegularProblems/createRegularProblemForm.dart';
 
 class ViewRegularProblem extends StatefulWidget {
-  ViewRegularProblem({Key? key, required this.dbr}) : super(key: key);
-  DatabaseRegularProblem dbr;
+  ViewRegularProblem({Key? key}) : super(key: key);
 
   @override
   State<ViewRegularProblem> createState() => _ViewRegularProblemState();
@@ -34,12 +33,6 @@ class _ViewRegularProblemState extends State<ViewRegularProblem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        // backgroundColor: Color.fromARGB(255, 231, 233, 231),
-        title: const Text("List of Regular Problems"),
-        // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.delete))],
-      ),
       body: ListView.builder(
         itemCount: docs.length,
         itemBuilder: (BuildContext context, int index) {
@@ -74,14 +67,13 @@ class _ViewRegularProblemState extends State<ViewRegularProblem> {
                                   ),
                                   TextButton(
                                       onPressed: () {
-                                        widget.dbr.delete(docs[index]['id']);
+                                        dbr.delete(docs[index]['id']);
                                         Navigator.pop(context, 'confirm');
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ViewRegularProblem(
-                                                        dbr: dbr)));
+                                                    ViewRegularProblem()));
                                       },
                                       child: const Text('confirm')),
                                 ],
@@ -113,6 +105,7 @@ class _ViewRegularProblemState extends State<ViewRegularProblem> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.redAccent,
         onPressed: () {
           Navigator.push(
               context,

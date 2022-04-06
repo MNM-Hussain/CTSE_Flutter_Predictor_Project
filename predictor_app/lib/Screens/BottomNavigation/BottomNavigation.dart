@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:predictor_app/Database/regularProblemDB.dart';
+import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/ImagePages/RetrieveImages.dart';
 import 'package:predictor_app/Screens/Profile/Profile.dart';
+import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
+import 'package:predictor_app/models/UserModel.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -11,10 +17,30 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int _currentIndex = 0;
+  late DatabaseRegularProblem db =
+      DatabaseRegularProblem().regularProblemIntialized();
+  var appbarNames = ['Home', 'Problems', 'Motivation', 'Profile'];
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel? loggedInUser = UserModel();
+  FirebaseFirestore firebaseFirestoreinstance = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedInUser = UserModel.fromMap(value.data());
+      setState(() => db = DatabaseRegularProblem().regularProblemIntialized());
+    });
+  }
 
   final screens = [
     const Center(child: Text("Prediction", style: TextStyle(fontSize: 60))),
-    const Center(child: Text("Problems", style: TextStyle(fontSize: 60))),
+    ViewRegularProblem(),
     const RetreiveImages(),
     const ProfileScreen()
   ];
@@ -22,6 +48,91 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: Drawer(
+          child: ListView(
+            // Remove padding
+            padding: EdgeInsets.zero,
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                    "${loggedInUser!.firstname} ${loggedInUser!.lastname}"),
+                accountEmail: Text("${loggedInUser!.email}"),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: ClipOval(
+                    child: Image.asset(
+                      'logo1.png',
+                      fit: BoxFit.cover,
+                      width: 90,
+                      height: 90,
+                    ),
+                  ),
+                ),
+                decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(
+                          'https://images.unsplash.com/photo-1541450805268-4822a3a774ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80.jpg')),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.favorite),
+                title: const Text('Predictor'),
+                onTap: () => null,
+              ),
+              ListTile(
+                leading: const Icon(Icons.sync_problem_outlined),
+                title: const Text('Regular Problems'),
+                onTap: () => null,
+              ),
+              ListTile(
+                leading: const Icon(Icons.psychology_outlined),
+                title: const Text('Motivation'),
+                onTap: () => setState(() => _currentIndex = 2),
+              ),
+              ListTile(
+                leading: Icon(Icons.feedback_outlined),
+                title: Text('Feedback'),
+                onTap: () => null,
+              ),
+              ListTile(
+                leading: const Icon(Icons.person_outlined),
+                title: const Text('Profile'),
+                onTap: () => setState(() => _currentIndex = 3),
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.logout_outlined),
+                title: const Text('Logout'),
+                onTap: () => null,
+              ),
+            ],
+          ),
+        ),
+        appBar: AppBar(
+          title: Text("${appbarNames[_currentIndex]}"),
+          actions: [
+            GestureDetector(
+              onTap: () {
+                print("on tap works");
+              },
+              child: PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                      onTap: () {
+                        // logout(context);
+                      },
+                      child: Text('Logout'))
+                ],
+              ),
+            ),
+          ],
+          centerTitle: true,
+          backgroundColor: Colors.redAccent,
+          elevation: 0.0,
+        ),
         body: screens[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,

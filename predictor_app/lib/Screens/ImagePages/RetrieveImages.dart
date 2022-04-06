@@ -16,6 +16,13 @@ class _RetreiveImagesState extends State<RetreiveImages> {
   FirebaseStorage storage = FirebaseStorage.instance;
   late String reference;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {});
+  }
+
   Future<List<Map<String, dynamic>>> loadImages() async {
     List<Map<String, dynamic>> files = [];
 
@@ -67,7 +74,10 @@ class _RetreiveImagesState extends State<RetreiveImages> {
             borderRadius: BorderRadius.circular(30),
             color: Colors.redAccent,
             child: MaterialButton(
-              onPressed: () => DeleteImage(),
+              onPressed: () {
+                DeleteImage();
+                Navigator.pop(context, "Delete");
+              },
               child: const Text(
                 'Delete',
                 textAlign: TextAlign.center,
@@ -81,12 +91,6 @@ class _RetreiveImagesState extends State<RetreiveImages> {
     );
 
     return Scaffold(
-      drawer: NavBar(),
-      appBar: AppBar(
-        backgroundColor: Colors.redAccent,
-        title: Text("Motivation"),
-        centerTitle: true,
-      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.redAccent,
         foregroundColor: Colors.black,
@@ -96,7 +100,7 @@ class _RetreiveImagesState extends State<RetreiveImages> {
               MaterialPageRoute<void>(
                 builder: (BuildContext context) => UploadImage(),
                 fullscreenDialog: true,
-              ));
+              )).then((value) => setState(() {}));
         },
         child: Icon(Icons.add),
       ),
@@ -147,10 +151,7 @@ class _RetreiveImagesState extends State<RetreiveImages> {
                                     IconButton(
                                       onPressed: () {
                                         //DeleteImage(image['path']
-                                        setState(() {
-                                          reference:
-                                          image['path'];
-                                        });
+                                        reference = image['path'];
                                         showDialog<void>(
                                             context: context,
                                             builder: (context) => dialog);
