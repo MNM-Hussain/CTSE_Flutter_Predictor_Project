@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                             height: 200,
                             child: Image.asset(
-                              "logo.png",
+                              "logo1.png",
                               fit: BoxFit.contain,
                             )),
                         emaiField,

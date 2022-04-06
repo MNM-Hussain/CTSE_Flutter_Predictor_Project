@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:predictor_app/Screens/ImagePages/RetrieveImages.dart';
-import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
+import 'package:predictor_app/Screens/Profile/Profile.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     const Center(child: Text("Prediction", style: TextStyle(fontSize: 60))),
     const Center(child: Text("Problems", style: TextStyle(fontSize: 60))),
     const RetreiveImages(),
-    const LoginScreen()
+    const ProfileScreen()
   ];
 
   @override

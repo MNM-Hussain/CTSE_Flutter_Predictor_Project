@@ -13,6 +13,7 @@ class RetreiveImages extends StatefulWidget {
 class _RetreiveImagesState extends State<RetreiveImages> {
   User? user = FirebaseAuth.instance.currentUser;
   FirebaseStorage storage = FirebaseStorage.instance;
+  late String reference;
 
   Future<List<Map<String, dynamic>>> loadImages() async {
     List<Map<String, dynamic>> files = [];
@@ -33,14 +34,51 @@ class _RetreiveImagesState extends State<RetreiveImages> {
     return files;
   }
 
-  Future<void> DeleteImage(String ref) async {
-    await storage.ref(ref).delete();
+  Future<void> DeleteImage() async {
+    await storage.ref(reference).delete();
     // Rebuild the UI
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    final AlertDialog dialog = AlertDialog(
+      title: Text('Cofirm Deletion?'),
+      content: Text("This Image will be deleted permenently."),
+      actions: [
+        Material(
+            elevation: 5,
+            borderRadius: BorderRadius.circular(30),
+            color: Colors.grey[200],
+            child: MaterialButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text(
+                'Cancel',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+            )),
+        Material(
+            elevation: 5,
+            borderRadius: BorderRadius.circular(30),
+            color: Colors.redAccent,
+            child: MaterialButton(
+              onPressed: () => DeleteImage(),
+              child: const Text(
+                'Delete',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            )),
+      ],
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
@@ -105,8 +143,16 @@ class _RetreiveImagesState extends State<RetreiveImages> {
                                   alignment: MainAxisAlignment.end,
                                   children: [
                                     IconButton(
-                                      onPressed: () =>
-                                          DeleteImage(image['path']),
+                                      onPressed: () {
+                                        //DeleteImage(image['path']
+                                        setState(() {
+                                          reference:
+                                          image['path'];
+                                        });
+                                        showDialog<void>(
+                                            context: context,
+                                            builder: (context) => dialog);
+                                      },
                                       icon: const Icon(
                                         Icons.delete,
                                         color: Colors.red,

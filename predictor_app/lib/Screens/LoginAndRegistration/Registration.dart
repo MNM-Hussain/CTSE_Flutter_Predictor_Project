@@ -46,6 +46,9 @@ class _RegistrationState extends State<Registration> {
         userModel.uid = user.uid;
         userModel.firstname = firstNameEditingController.text;
         userModel.lastname = lastNameEditingController.text;
+        userModel.age = ageEditingController.text;
+        userModel.jobStatus = jobStatus;
+        userModel.civilStatus = civilStatus;
 
         await firebaseFirestoreinstance
             .collection('users')
@@ -283,7 +286,7 @@ class _RegistrationState extends State<Registration> {
                         SizedBox(
                             height: 200,
                             child: Image.asset(
-                              "logo.png",
+                              "logo1.png",
                               fit: BoxFit.contain,
                             )),
                         firstNameField,

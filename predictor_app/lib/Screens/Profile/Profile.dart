@@ -103,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('profile'),
         actions: [
@@ -136,7 +136,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               //Image displaying
 
               child: CircleAvatar(
-                backgroundImage: AssetImage('ninja-3.png'),
+                backgroundColor: Colors.white,
+                backgroundImage: AssetImage('logo1.png'),
                 radius: 60.0,
               ),
             ),
@@ -170,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Text(
               //displaying a value from variable
-              "24",
+              "${loggedInUser!.age}",
               style: TextStyle(
                   color: Colors.amberAccent[200],
                   letterSpacing: 2.0,
@@ -189,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Text(
               //displaying a value from variable
-              'Unemployed',
+              "${loggedInUser!.jobStatus}",
               style: TextStyle(
                   color: Colors.amberAccent[200],
                   letterSpacing: 2.0,
@@ -208,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             Text(
               //displaying a value from variable
-              'Married',
+              "${loggedInUser!.civilStatus}",
               style: TextStyle(
                   color: Colors.amberAccent[200],
                   letterSpacing: 2.0,
