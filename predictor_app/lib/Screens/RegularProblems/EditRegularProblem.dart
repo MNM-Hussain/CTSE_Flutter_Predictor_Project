@@ -38,6 +38,16 @@ class _AddState extends State<UpdateRegularProblemForm> {
       appBar: AppBar(
         backgroundColor: Colors.redAccent,
         title: const Text("Regular problems"),
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.delete))],
       ),
       body: SingleChildScrollView(
@@ -49,14 +59,6 @@ class _AddState extends State<UpdateRegularProblemForm> {
                 style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 decoration: inputDecoration("User Name"),
                 controller: userNameController,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
-                decoration: inputDecoration("User Age"),
-                controller: ageController,
               ),
               const SizedBox(
                 height: 20,

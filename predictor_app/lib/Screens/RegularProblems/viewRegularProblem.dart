@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Database/regularProblemDB.dart';
@@ -14,6 +15,7 @@ class ViewRegularProblem extends StatefulWidget {
 }
 
 class _ViewRegularProblemState extends State<ViewRegularProblem> {
+  User? user = FirebaseAuth.instance.currentUser;
   late DatabaseRegularProblem dbr;
   List docs = [];
 
@@ -52,62 +54,63 @@ class _ViewRegularProblemState extends State<ViewRegularProblem> {
                   trailing: Text("Age: " + docs[index]['age']),
                   subtitle: Text(docs[index]['problem']),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    IconButton(
-                        icon: const Icon(Icons.delete),
-                        color: Colors.red,
-                        onPressed: () => showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Delete Confirmation'),
-                                content: const Text(
-                                    'Are you sure you Want to delete this data?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Cancel'),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                      onPressed: () {
-                                        dbr.delete(docs[index]['id']);
-                                        Navigator.pop(context, 'confirm');
-                                        Fluttertoast.showToast(
-                                            msg: 'Successfuly Deleted !',
-                                            backgroundColor: Colors.green);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BottomNavigation()));
-                                      },
-                                      child: const Text('confirm')),
-                                ],
-                              ),
-                            )),
-                    const SizedBox(width: 8),
-                    IconButton(
-                        icon: const Icon(Icons.edit),
-                        color: Colors.blueGrey,
-                        onPressed: () {
-                          Navigator.pop(context, true);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      UpdateRegularProblemForm(
-                                        regularProblem: docs[index],
-                                        dbr: dbr,
-                                      ))).then((value) => {
-                                if (value != null)
-                                  {regularProblemViewinitialize()}
-                              });
-                        }),
-                    const SizedBox(width: 8),
-                  ],
-                ),
+                if (docs[index]['userUid'] == user!.uid)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      IconButton(
+                          icon: const Icon(Icons.delete),
+                          color: Colors.red,
+                          onPressed: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Delete Confirmation'),
+                                  content: const Text(
+                                      'Are you sure you Want to delete this data?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'Cancel'),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          dbr.delete(docs[index]['id']);
+                                          Navigator.pop(context, 'confirm');
+                                          Fluttertoast.showToast(
+                                              msg: 'Successfuly Deleted !',
+                                              backgroundColor: Colors.green);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BottomNavigation()));
+                                        },
+                                        child: const Text('confirm')),
+                                  ],
+                                ),
+                              )),
+                      const SizedBox(width: 8),
+                      IconButton(
+                          icon: const Icon(Icons.edit),
+                          color: Colors.blueGrey,
+                          onPressed: () {
+                            Navigator.pop(context, true);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdateRegularProblemForm(
+                                          regularProblem: docs[index],
+                                          dbr: dbr,
+                                        ))).then((value) => {
+                                  if (value != null)
+                                    {regularProblemViewinitialize()}
+                                });
+                          }),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
               ],
             ),
           );
