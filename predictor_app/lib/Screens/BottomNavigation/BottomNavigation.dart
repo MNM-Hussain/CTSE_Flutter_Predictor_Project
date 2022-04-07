@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Database/regularProblemDB.dart';
 import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/ImagePages/RetrieveImages.dart';
+import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
+import 'package:predictor_app/Screens/Predictor/Predictor.dart';
 import 'package:predictor_app/Screens/Profile/Profile.dart';
 import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
 import 'package:predictor_app/models/UserModel.dart';
@@ -38,8 +41,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
     });
   }
 
+  Future<void> logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Fluttertoast.showToast(
+        msg: "Successfully Logout !", backgroundColor: Colors.redAccent);
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
   final screens = [
-    const Center(child: Text("Prediction", style: TextStyle(fontSize: 60))),
+    const Predictor(),
     ViewRegularProblem(),
     const RetreiveImages(),
     const ProfileScreen()
@@ -79,12 +90,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
               ListTile(
                 leading: const Icon(Icons.favorite),
                 title: const Text('Predictor'),
-                onTap: () => null,
+                onTap: () => setState(() => _currentIndex = 0),
               ),
               ListTile(
                 leading: const Icon(Icons.sync_problem_outlined),
                 title: const Text('Regular Problems'),
-                onTap: () => null,
+                onTap: () => setState(() => _currentIndex = 1),
               ),
               ListTile(
                 leading: const Icon(Icons.psychology_outlined),
@@ -122,7 +133,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                       onTap: () {
-                        // logout(context);
+                        logout(context);
                       },
                       child: Text('Logout'))
                 ],
