@@ -116,30 +116,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
               ListTile(
                 leading: const Icon(Icons.logout_outlined),
                 title: const Text('Logout'),
-                onTap: () => null,
+                onTap: () => logout(context),
               ),
             ],
           ),
         ),
         appBar: AppBar(
           title: Text("${appbarNames[_currentIndex]}"),
-          actions: [
-            GestureDetector(
-              onTap: () {
-                print("on tap works");
-              },
-              child: PopupMenuButton(
-                icon: Icon(Icons.more_vert),
-                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  PopupMenuItem(
-                      onTap: () {
-                        logout(context);
-                      },
-                      child: Text('Logout'))
-                ],
-              ),
-            ),
-          ],
           centerTitle: true,
           backgroundColor: Colors.redAccent,
           elevation: 0.0,

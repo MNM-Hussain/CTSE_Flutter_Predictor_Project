@@ -25,6 +25,8 @@ class _AddState extends State<CreateRegularProblemForm> {
 
   TextEditingController userNameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+  TextEditingController jobStatusController = TextEditingController();
+  TextEditingController civilStusController = TextEditingController();
   TextEditingController problemController = TextEditingController();
 
   @override
@@ -37,10 +39,13 @@ class _AddState extends State<CreateRegularProblemForm> {
         .get()
         .then((value) {
       loggedInUser = UserModel.fromMap(value.data());
+      userNameController.text =
+          "${loggedInUser!.firstname} ${loggedInUser!.lastname}".toString();
+      ageController.text = "${loggedInUser!.age}".toString();
+      jobStatusController.text = "${loggedInUser!.jobStatus}".toString();
+      civilStusController.text = "${loggedInUser!.civilStatus}".toString();
       setState(() => dbr = DatabaseRegularProblem().regularProblemIntialized());
     });
-    userNameController.text =
-        "${loggedInUser!.firstname} ${loggedInUser!.lastname}";
   }
 
   @override
@@ -49,6 +54,16 @@ class _AddState extends State<CreateRegularProblemForm> {
       // backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         backgroundColor: Colors.red,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: const Text("Regular problems"),
         // actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.delete))],
       ),
@@ -57,13 +72,11 @@ class _AddState extends State<CreateRegularProblemForm> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              Text(
-                "${loggedInUser!.firstname} ${loggedInUser!.lastname}",
-                style: const TextStyle(
-                  fontSize: 24,
-                ),
-              ),
               TextFormField(
+                enableInteractiveSelection: false,
+                onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
                 style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 decoration: inputDecoration("User Name"),
                 controller: userNameController,
@@ -72,9 +85,36 @@ class _AddState extends State<CreateRegularProblemForm> {
                 height: 20,
               ),
               TextFormField(
+                enableInteractiveSelection: false,
+                onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
                 style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 decoration: inputDecoration("User Age"),
                 controller: ageController,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                  enableInteractiveSelection: false,
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                  },
+                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                  decoration: inputDecoration("Job Status"),
+                  controller: jobStatusController),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                enableInteractiveSelection: false,
+                onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                },
+                style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                decoration: inputDecoration("Civil Status"),
+                controller: civilStusController,
               ),
               const SizedBox(
                 height: 20,
@@ -100,9 +140,11 @@ class _AddState extends State<CreateRegularProblemForm> {
               splashColor: Colors.blueGrey,
               onPressed: () {
                 widget.dbr.create(
+                    user!.uid,
                     userNameController.text,
-                    // int.parse(ageController.text),
                     ageController.text,
+                    jobStatusController.text,
+                    civilStusController.text,
                     problemController.text);
                 Navigator.pop(context, true);
                 Fluttertoast.showToast(

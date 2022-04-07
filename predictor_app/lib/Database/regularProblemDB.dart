@@ -6,11 +6,15 @@ class DatabaseRegularProblem {
     firestore = FirebaseFirestore.instance;
   }
 
-  Future<void> create(String username, String age, String problem) async {
+  Future<void> create(String userUid, String username, String age,
+      String jobStatus, String civilStatus, String problem) async {
     try {
       await firestore.collection("RegularProblemForm").add({
         'username': username,
+        'userUid': userUid,
         'age': age,
+        'jobStatus': jobStatus,
+        'civilStatus': civilStatus,
         'problem': problem,
         'timestamp':
             FieldValue.serverTimestamp() //this is to get the server timeStamp
@@ -40,8 +44,11 @@ class DatabaseRegularProblem {
         for (var doc in querySnapshot.docs.toList()) {
           Map a = {
             "id": doc.id,
+            "userUid": doc['userUid'],
             "username": doc['username'],
             "age": doc['age'],
+            "jobStatus": doc['jobStatus'],
+            "civilStatus": doc['civilStatus'],
             "problem": doc['problem']
           };
           docs.add(a);
@@ -60,7 +67,7 @@ class DatabaseRegularProblem {
       await firestore
           .collection("RegularProblemForm")
           .doc(id)
-          .update({'username': username, 'age': age, 'problem': problem});
+          .update({'problem': problem});
     } catch (e) {
       print(e);
     }
