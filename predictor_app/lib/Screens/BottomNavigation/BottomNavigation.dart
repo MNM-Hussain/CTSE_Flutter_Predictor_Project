@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:predictor_app/Database/regularProblemDB.dart';
 import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/ImagePages/RetrieveImages.dart';
+import 'package:predictor_app/Screens/Predictor/Predictor.dart';
 import 'package:predictor_app/Screens/Profile/Profile.dart';
 import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
 import 'package:predictor_app/models/UserModel.dart';
@@ -39,7 +40,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   }
 
   final screens = [
-    const Center(child: Text("Prediction", style: TextStyle(fontSize: 60))),
+    const Predictor(),
     ViewRegularProblem(),
     const RetreiveImages(),
     const ProfileScreen()
