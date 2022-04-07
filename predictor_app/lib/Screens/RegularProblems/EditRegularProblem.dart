@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Screens/BottomNavigation/BottomNavigation.dart';
 import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
 import '../../Database/regularProblemDB.dart';
@@ -75,8 +76,10 @@ class _AddState extends State<UpdateRegularProblemForm> {
         color: Colors.transparent,
         child: BottomAppBar(
           color: Colors.transparent,
-          child: RaisedButton(
-              color: Colors.black,
+          child: MaterialButton(
+              color: Colors.redAccent,
+              elevation: 5,
+              splashColor: Colors.blueGrey,
               onPressed: () {
                 widget.dbr.update(
                     widget.regularProblem['id'],
@@ -85,6 +88,9 @@ class _AddState extends State<UpdateRegularProblemForm> {
                     problemController.text);
 
                 Navigator.pop(context, true);
+                Fluttertoast.showToast(
+                    msg: 'Successfuly Updated !',
+                    backgroundColor: Colors.green);
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -107,12 +113,12 @@ class _AddState extends State<UpdateRegularProblemForm> {
       fillColor: const Color.fromARGB(255, 3, 3, 3),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(25.0),
-        borderSide: const BorderSide(color: Colors.black),
+        borderSide: const BorderSide(color: Colors.blueGrey),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(25.0),
         borderSide: const BorderSide(
-          color: Colors.black,
+          color: Colors.blueGrey,
           width: 2.0,
         ),
       ),

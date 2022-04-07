@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/ImagePages/UploadImage.dart';
 
@@ -35,7 +37,8 @@ class _RetreiveImagesState extends State<RetreiveImages> {
       files.add({
         "url": fileUrl,
         "path": file.fullPath,
-        "uploaded_by": fileMeta.customMetadata?['uploaded_by'] ?? 'Nobody'
+        "uploaded_by": fileMeta.customMetadata?['uploaded_by'] ?? 'Nobody',
+        'timestamp': FieldValue.serverTimestamp() //added new
       });
     });
 
@@ -77,6 +80,9 @@ class _RetreiveImagesState extends State<RetreiveImages> {
               onPressed: () {
                 DeleteImage();
                 Navigator.pop(context, "Delete");
+                Fluttertoast.showToast(
+                    msg: 'Successfuly Deleted !',
+                    backgroundColor: Colors.green);
               },
               child: const Text(
                 'Delete',
@@ -165,7 +171,7 @@ class _RetreiveImagesState extends State<RetreiveImages> {
                                       onPressed: () {},
                                       icon: const Icon(
                                         Icons.edit,
-                                        color: Colors.red,
+                                        color: Colors.blueGrey,
                                       ),
                                     ),
                                   ],
