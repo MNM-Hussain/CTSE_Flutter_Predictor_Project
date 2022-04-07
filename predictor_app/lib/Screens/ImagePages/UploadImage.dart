@@ -106,6 +106,7 @@ class _UploadImageState extends State<UploadImage> {
                     elevation: 5,
                     borderRadius: BorderRadius.circular(30),
                     color: Colors.redAccent,
+                    shadowColor: Colors.blueGrey,
                     child: MaterialButton(
                       padding: EdgeInsets.fromLTRB(30, 15, 20, 20),
                       minWidth: MediaQuery.of(context).size.width,

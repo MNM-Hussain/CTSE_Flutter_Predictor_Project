@@ -99,7 +99,7 @@ class _RetreiveImagesState extends State<RetreiveImages> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.redAccent,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         onPressed: () {
           Navigator.push(
               context,

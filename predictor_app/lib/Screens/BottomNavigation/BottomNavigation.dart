@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:predictor_app/Database/feedbackDB.dart';
 import 'package:predictor_app/Database/regularProblemDB.dart';
 import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
+import 'package:predictor_app/Screens/Feedback/ViewFeedback.dart';
+import 'package:predictor_app/Screens/Feedback/createFeedback.dart';
 import 'package:predictor_app/Screens/ImagePages/RetrieveImages.dart';
 import 'package:predictor_app/Screens/LoginAndRegistration/Login.dart';
 import 'package:predictor_app/Screens/Predictor/Predictor.dart';
@@ -22,6 +25,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int _currentIndex = 0;
   late DatabaseRegularProblem db =
       DatabaseRegularProblem().regularProblemIntialized();
+  late DatabaseFeedBack dbf = DatabaseFeedBack().feedBackIntialized();
   var appbarNames = ['Home', 'Problems', 'Motivation', 'Profile'];
   User? user = FirebaseAuth.instance.currentUser;
   UserModel? loggedInUser = UserModel();
@@ -38,6 +42,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         .then((value) {
       loggedInUser = UserModel.fromMap(value.data());
       setState(() => db = DatabaseRegularProblem().regularProblemIntialized());
+      // setState(() => dbf = DatabaseFeedBack().feedBackIntialized());
     });
   }
 
@@ -103,10 +108,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 onTap: () => setState(() => _currentIndex = 2),
               ),
               ListTile(
-                leading: Icon(Icons.feedback_outlined),
-                title: Text('Feedback'),
-                onTap: () => null,
-              ),
+                  leading: const Icon(Icons.feedback_outlined),
+                  title: const Text('Feedback'),
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ViewFeedback()))),
               ListTile(
                 leading: const Icon(Icons.person_outlined),
                 title: const Text('Profile'),
