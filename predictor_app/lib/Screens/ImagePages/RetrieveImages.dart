@@ -126,25 +126,6 @@ class _RetreiveImagesState extends State<RetreiveImages> {
                         final Map<String, dynamic> image =
                             snapshot.data![index];
 
-                        // return Card(
-                        //   margin: const EdgeInsets.symmetric(vertical: 10),
-                        //   child: ListTile(
-                        //     dense: false,
-                        //     leading: Image.network(image['url']),
-                        //     trailing: IconButton(
-                        //       onPressed: () {},
-                        //       icon: const Icon(
-                        //         Icons.delete,
-                        //         color: Colors.red,
-                        //       ),
-                        //     ),
-                        //   ),
-                        // );
-
-                        // return Padding(
-                        //     padding: const EdgeInsets.all(10.0),
-                        //     child: Image.network(image['url']));
-
                         return Card(
                           clipBehavior: Clip.antiAlias,
                           child: Column(

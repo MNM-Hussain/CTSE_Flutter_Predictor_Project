@@ -1,9 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:predictor_app/Screens/Problems_Set/viewProblem_Set.dart';
-import 'package:predictor_app/models/ProblemSetModel.dart';
-import 'package:predictor_app/models/UserModel.dart';
+import 'package:predictor_app/Screens/Predictor/ViewPredictedProblems.dart';
 
 class Predictor extends StatefulWidget {
   const Predictor({Key? key}) : super(key: key);
@@ -13,38 +9,13 @@ class Predictor extends StatefulWidget {
 }
 
 class _PredictorState extends State<Predictor> {
-  User? user = FirebaseAuth.instance.currentUser;
-  UserModel? loggedInUser = UserModel();
-  ProblemSetModel? problems = ProblemSetModel();
-  FirebaseFirestore firebaseFirestoreinstance = FirebaseFirestore.instance;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      loggedInUser = UserModel.fromMap(value.data());
-      setState(() {});
-    });
-  }
-
   void retreiveProblems() {
-    String? age = loggedInUser!.age;
-    age = (int.parse(age!) + 5).toString();
-
-    FirebaseFirestore.instance
-        .collection("RegularProblemForm")
-        .where('age', isEqualTo: age)
-        .get()
-        .then((querySnapshot) {
-      querySnapshot.docs.forEach((result) {
-        print(result.data());
-      });
-    });
+    Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => ViewPredictedProblems(),
+          fullscreenDialog: true,
+        )).then((value) => setState(() {}));
   }
 
   @override

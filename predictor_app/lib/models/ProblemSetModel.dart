@@ -7,9 +7,9 @@ class ProblemSetModel {
   String? civilStatus;
 
   ProblemSetModel(
-      {this.age,
-      this.problem,
+      {this.problem,
       this.username,
+      this.age,
       this.timestamp,
       this.jobStatus,
       this.civilStatus});
