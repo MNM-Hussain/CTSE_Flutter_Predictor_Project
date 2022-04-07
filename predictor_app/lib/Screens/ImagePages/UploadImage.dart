@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './Api.dart';
@@ -110,6 +111,9 @@ class _UploadImageState extends State<UploadImage> {
                       minWidth: MediaQuery.of(context).size.width,
                       onPressed: () {
                         uploadFile();
+                        Fluttertoast.showToast(
+                            msg: 'Successfuly Uploaded !',
+                            backgroundColor: Colors.green);
                       },
                       child: const Text(
                         'Upload File',

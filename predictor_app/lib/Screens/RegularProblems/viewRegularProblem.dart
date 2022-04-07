@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Database/regularProblemDB.dart';
 import 'package:predictor_app/Screens/RegularProblems/EditRegularProblem.dart';
 import 'package:predictor_app/Screens/RegularProblems/createRegularProblemForm.dart';
+
+import '../BottomNavigation/BottomNavigation.dart';
 
 class ViewRegularProblem extends StatefulWidget {
   ViewRegularProblem({Key? key}) : super(key: key);
@@ -37,6 +40,7 @@ class _ViewRegularProblemState extends State<ViewRegularProblem> {
         itemCount: docs.length,
         itemBuilder: (BuildContext context, int index) {
           return Card(
+            elevation: 5,
             margin: const EdgeInsets.all(10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -53,6 +57,7 @@ class _ViewRegularProblemState extends State<ViewRegularProblem> {
                   children: <Widget>[
                     IconButton(
                         icon: const Icon(Icons.delete),
+                        color: Colors.red,
                         onPressed: () => showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
@@ -69,11 +74,14 @@ class _ViewRegularProblemState extends State<ViewRegularProblem> {
                                       onPressed: () {
                                         dbr.delete(docs[index]['id']);
                                         Navigator.pop(context, 'confirm');
+                                        Fluttertoast.showToast(
+                                            msg: 'Successfuly Deleted !',
+                                            backgroundColor: Colors.green);
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ViewRegularProblem()));
+                                                    BottomNavigation()));
                                       },
                                       child: const Text('confirm')),
                                 ],
@@ -82,6 +90,7 @@ class _ViewRegularProblemState extends State<ViewRegularProblem> {
                     const SizedBox(width: 8),
                     IconButton(
                         icon: const Icon(Icons.edit),
+                        color: Colors.blueGrey,
                         onPressed: () {
                           Navigator.pop(context, true);
                           Navigator.push(
