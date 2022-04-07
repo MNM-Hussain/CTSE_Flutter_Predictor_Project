@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Database/feedbackDB.dart';
 import 'package:predictor_app/Screens/BottomNavigation/BottomNavigation.dart';
 import 'package:flutter/material.dart';
+
+import '../../models/UserModel.dart';
 
 class CreateFeedback extends StatefulWidget {
   CreateFeedback({Key? key, required this.dbf}) : super(key: key);
@@ -13,6 +17,10 @@ class CreateFeedback extends StatefulWidget {
 class _AddState extends State<CreateFeedback> {
   late DatabaseFeedBack dbf;
 
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel? loggedInUser = UserModel();
+  FirebaseFirestore firebaseFirestoreinstance = FirebaseFirestore.instance;
+
   TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController ageController = TextEditingController();
@@ -22,6 +30,18 @@ class _AddState extends State<CreateFeedback> {
   void initState() {
     super.initState();
     dbf = DatabaseFeedBack();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedInUser = UserModel.fromMap(value.data());
+      userNameController.text =
+          "${loggedInUser!.firstname} ${loggedInUser!.lastname}".toString();
+      emailController.text = "${loggedInUser!.email}".toString();
+      ageController.text = "${loggedInUser!.age}".toString();
+      setState(() => dbf = DatabaseFeedBack().feedBackIntialized());
+    });
   }
 
   @override
@@ -83,6 +103,7 @@ class _AddState extends State<CreateFeedback> {
               splashColor: Colors.blueGrey,
               onPressed: () {
                 widget.dbf.create(
+                    user!.uid,
                     userNameController.text,
                     // int.parse(ageController.text),
                     emailController.text,

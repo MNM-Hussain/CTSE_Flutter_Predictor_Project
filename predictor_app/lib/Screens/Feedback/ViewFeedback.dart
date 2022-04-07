@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Database/feedbackDB.dart';
@@ -14,6 +15,7 @@ class ViewFeedback extends StatefulWidget {
 }
 
 class _ViewFeedbackState extends State<ViewFeedback> {
+  User? user = FirebaseAuth.instance.currentUser;
   late DatabaseFeedBack dbf;
   List docs = [];
 
@@ -53,60 +55,67 @@ class _ViewFeedbackState extends State<ViewFeedback> {
                   trailing: Text("Age: " + docs[index]['age']),
                   subtitle: Text(docs[index]['comment']),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    IconButton(
-                        icon: const Icon(Icons.delete),
-                        color: Colors.red,
-                        onPressed: () => showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Delete Confirmation'),
-                                content: const Text(
-                                    'Are you sure you Want to delete this feedback?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Cancel'),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                      onPressed: () {
-                                        dbf.delete(docs[index]['id']);
-                                        Navigator.pop(context, 'confirm');
-                                        Fluttertoast.showToast(
-                                            msg: 'Successfuly Deleted !',
-                                            backgroundColor: Colors.green);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    BottomNavigation()));
-                                      },
-                                      child: const Text('confirm')),
-                                ],
-                              ),
-                            )),
-                    const SizedBox(width: 8),
-                    IconButton(
-                        icon: const Icon(Icons.edit),
-                        color: Colors.blueGrey,
-                        onPressed: () {
-                          Navigator.pop(context, true);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UpdateFeedback(
-                                        feedBack: docs[index],
-                                        dbf: dbf,
-                                      ))).then((value) => {
-                                if (value != null) {feedBackViewinitialize()}
-                              });
-                        }),
-                    const SizedBox(width: 8),
-                  ],
-                ),
+                // (Text(docs[index]['username'])),
+                // (Text(docs[index]['email'])),
+
+                // (Text("Age: " + docs[index]['age'])),
+                // (Text(docs[index]['comment'])),
+
+                if (docs[index]['userUid'] == user!.uid)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      IconButton(
+                          icon: const Icon(Icons.delete),
+                          color: Colors.red,
+                          onPressed: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Delete Confirmation'),
+                                  content: const Text(
+                                      'Are you sure you Want to delete this feedback?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'Cancel'),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                        onPressed: () {
+                                          dbf.delete(docs[index]['id']);
+                                          Navigator.pop(context, 'confirm');
+                                          Fluttertoast.showToast(
+                                              msg: 'Successfuly Deleted !',
+                                              backgroundColor: Colors.green);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BottomNavigation()));
+                                        },
+                                        child: const Text('confirm')),
+                                  ],
+                                ),
+                              )),
+                      const SizedBox(width: 8),
+                      IconButton(
+                          icon: const Icon(Icons.edit),
+                          color: Colors.blueGrey,
+                          onPressed: () {
+                            Navigator.pop(context, true);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UpdateFeedback(
+                                          feedBack: docs[index],
+                                          dbf: dbf,
+                                        ))).then((value) => {
+                                  if (value != null) {feedBackViewinitialize()}
+                                });
+                          }),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
               ],
             ),
           );

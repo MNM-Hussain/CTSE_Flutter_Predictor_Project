@@ -6,11 +6,12 @@ class DatabaseFeedBack {
     firestore = FirebaseFirestore.instance;
   }
 
-  Future<void> create(
-      String username, String email, String age, String comment) async {
+  Future<void> create(String userUid, String username, String email, String age,
+      String comment) async {
     try {
       await firestore.collection("Feedback").add({
         'username': username,
+        'userUid': userUid,
         'email': email,
         'age': age,
         'comment': comment,
@@ -40,6 +41,7 @@ class DatabaseFeedBack {
         for (var doc in querySnapshot.docs.toList()) {
           Map a = {
             "id": doc.id,
+            "userUid": doc['userUid'],
             "username": doc['username'],
             "email": doc['email'],
             "age": doc['age'],
@@ -58,12 +60,10 @@ class DatabaseFeedBack {
   Future<void> update(String id, String username, String email, String age,
       String comment) async {
     try {
-      await firestore.collection("Feedback").doc(id).update({
-        'username': username,
-        'email': email,
-        'age': age,
-        'comment': comment
-      });
+      await firestore
+          .collection("Feedback")
+          .doc(id)
+          .update({'comment': comment});
     } catch (e) {
       print(e);
     }
