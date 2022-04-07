@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Screens/BottomNavigation/BottomNavigation.dart';
 import 'package:predictor_app/Screens/RegularProblems/viewRegularProblem.dart';
 import '../../Database/regularProblemDB.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+
+import '../../models/UserModel.dart';
 
 class CreateRegularProblemForm extends StatefulWidget {
   CreateRegularProblemForm({Key? key, required this.dbr}) : super(key: key);
@@ -15,6 +19,10 @@ class CreateRegularProblemForm extends StatefulWidget {
 class _AddState extends State<CreateRegularProblemForm> {
   late DatabaseRegularProblem dbr;
 
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel? loggedInUser = UserModel();
+  FirebaseFirestore firebaseFirestoreinstance = FirebaseFirestore.instance;
+
   TextEditingController userNameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController problemController = TextEditingController();
@@ -23,6 +31,16 @@ class _AddState extends State<CreateRegularProblemForm> {
   void initState() {
     super.initState();
     dbr = DatabaseRegularProblem();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedInUser = UserModel.fromMap(value.data());
+      setState(() => dbr = DatabaseRegularProblem().regularProblemIntialized());
+    });
+    userNameController.text =
+        "${loggedInUser!.firstname} ${loggedInUser!.lastname}";
   }
 
   @override
@@ -39,6 +57,12 @@ class _AddState extends State<CreateRegularProblemForm> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
+              Text(
+                "${loggedInUser!.firstname} ${loggedInUser!.lastname}",
+                style: const TextStyle(
+                  fontSize: 24,
+                ),
+              ),
               TextFormField(
                 style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                 decoration: inputDecoration("User Name"),
