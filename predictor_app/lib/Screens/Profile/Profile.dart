@@ -32,14 +32,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  Future<void> logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Fluttertoast.showToast(
-        msg: "Successfully Logout !", backgroundColor: Colors.redAccent);
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginScreen()));
-  }
-
   Future<void> deleteAccount(BuildContext context) async {
     try {
       await firebaseFirestoreinstance
@@ -104,31 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     return Scaffold(
-      //drawer: NavBar(),
       backgroundColor: Colors.white,
-      // appBar: AppBar(
-      //   title: const Text('profile'),
-      //   actions: [
-      //     GestureDetector(
-      //       onTap: () {
-      //         print("on tap works");
-      //       },
-      //       child: PopupMenuButton(
-      //         icon: Icon(Icons.more_vert),
-      //         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-      //           PopupMenuItem(
-      //               onTap: () {
-      //                 logout(context);
-      //               },
-      //               child: Text('Logout'))
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      //   centerTitle: true,
-      //   backgroundColor: Colors.redAccent,
-      //   elevation: 0.0,
-      // ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 0.0),
@@ -245,9 +213,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.redAccent,
                       child: MaterialButton(
                         shape: StadiumBorder(
-                          side: BorderSide(color: Colors.black, width: 1),
+                          side: BorderSide(color: Colors.black38, width: 1),
                         ),
-                        padding: EdgeInsets.fromLTRB(25, 15, 20, 25),
+                        padding: EdgeInsets.all(15.0),
                         onPressed: () {
                           showDialog<void>(
                               context: context, builder: (context) => dialog);
@@ -271,9 +239,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.redAccent,
                       child: MaterialButton(
                         shape: StadiumBorder(
-                          side: BorderSide(color: Colors.black, width: 1),
+                          side: BorderSide(color: Colors.black38, width: 1),
                         ),
-                        padding: EdgeInsets.fromLTRB(25, 15, 20, 25),
+                        padding: EdgeInsets.all(15.0),
                         onPressed: () {
                           Navigator.push(
                               context,
