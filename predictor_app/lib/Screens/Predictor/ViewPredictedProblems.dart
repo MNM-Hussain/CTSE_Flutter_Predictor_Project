@@ -88,10 +88,14 @@ class _ViewPredictedProblemsState extends State<ViewPredictedProblems> {
                         document.data()! as Map<String, dynamic>;
 
                     return Card(
+                      elevation: 5,
+                      margin: const EdgeInsets.all(10),
                       clipBehavior: Clip.antiAlias,
                       child: Column(
                         children: [
                           ListTile(
+                            contentPadding: const EdgeInsets.only(
+                                right: 30, left: 36, top: 22),
                             leading: Icon(Icons.star),
                             title: Text(data['problem']),
                           ),
