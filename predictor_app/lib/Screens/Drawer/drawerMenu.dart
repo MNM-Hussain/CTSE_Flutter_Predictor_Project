@@ -56,7 +56,7 @@ class _NavBarState extends State<NavBar> {
               backgroundColor: Colors.transparent,
               child: ClipOval(
                 child: Image.asset(
-                  'logo1.png',
+                  'profile.jpg',
                   fit: BoxFit.cover,
                   width: 90,
                   height: 90,

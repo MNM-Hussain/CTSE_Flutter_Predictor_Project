@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:predictor_app/Database/feedbackDB.dart';
+import 'package:predictor_app/Screens/Drawer/drawerMenu.dart';
 import 'package:predictor_app/Screens/Feedback/createFeedback.dart';
 import 'package:predictor_app/Screens/Feedback/editFeedback.dart';
 
@@ -38,6 +39,12 @@ class _ViewFeedbackState extends State<ViewFeedback> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavBar(),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      appBar: AppBar(
+        backgroundColor: Colors.redAccent,
+        title: const Text("FeedBack"),
+      ),
       body: ListView.builder(
         itemCount: docs.length,
         itemBuilder: (BuildContext context, int index) {
